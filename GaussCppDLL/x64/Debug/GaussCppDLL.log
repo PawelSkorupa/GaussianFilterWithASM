@@ -1,0 +1,6 @@
+﻿  functions.cpp
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussCppDLL\functions.cpp(5,5): warning C4273: "test": niespójne powiązanie biblioteki dll
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussCppDLL\functions.h(10,32): message : zobacz poprzednią definicję „test”
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussCppDLL\functions.cpp(13,6): warning C4273: "gaussBlur": niespójne powiązanie biblioteki dll
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussCppDLL\functions.h(12,33): message : zobacz poprzednią definicję „gaussBlur”
+  GaussCppDLL.vcxproj -> C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\x64\Debug\GaussCppDLL.dll
