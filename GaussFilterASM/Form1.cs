@@ -66,6 +66,22 @@ namespace GaussFilterASM
 
             runButton.Enabled = false;
 
+            if (!testCheckbox.Checked)
+            {
+                runBlurNormally();
+            }
+            else
+            {
+                runBlurSpeedtest();
+            }
+
+            runButton.Enabled = true;
+            saveButton.Enabled = true;
+        }
+
+        private void runBlurNormally()
+        {
+
             int width = beforeBitmap.Width;
             int height = beforeBitmap.Height;
 
@@ -83,7 +99,7 @@ namespace GaussFilterASM
 
             int numberOfThreads = threadsTrackbar.Value;
 
-            int dividedPart = (beforeBitmap.Height) / numberOfThreads;
+            int dividedPart = height / numberOfThreads;
 
             Thread[] threads = new Thread[numberOfThreads];
 
@@ -93,12 +109,13 @@ namespace GaussFilterASM
                 for (int i = 0; i < (numberOfThreads - 1); i++)
                 {
                     int localIndex = i;
-                    threads[i] = new Thread(() => gaussBlur(rgbValues, bytes, width /** height*/, localIndex * dividedPart, (localIndex + 1) * dividedPart));
+                    threads[i] = new Thread(() => gaussBlur(rgbValues, bytes, width, localIndex * dividedPart, (localIndex + 1) * dividedPart));
                 }
                 threads[numberOfThreads - 1] = new Thread(() =>
                 gaussBlur(rgbValues, bytes, width, (numberOfThreads - 1) * dividedPart, height - 1));
 
-            } else
+            }
+            else
             {
 
                 for (int i = 0; i < (numberOfThreads - 1); i++)
@@ -112,12 +129,12 @@ namespace GaussFilterASM
             }
 
             timer.Start();
-            foreach(Thread thread in threads)
+            foreach (Thread thread in threads)
             {
                 thread.Start();
             }
 
-            foreach(Thread thread in threads)
+            foreach (Thread thread in threads)
             {
                 thread.Join();
             }
@@ -129,10 +146,120 @@ namespace GaussFilterASM
 
             afterBmpBox.Image = beforeBitmap;
 
-           timeValueLabel.Text = timer.ElapsedTicks.ToString() + " ticks";
+            timeValueLabel.Text = timer.ElapsedTicks.ToString() + " ticks";
 
-            runButton.Enabled = true;
-            saveButton.Enabled = true;
+
+        }
+
+        private void runBlurSpeedtest()
+        {
+
+            String outputPath = "C:\\Users\\Pawe³ Skorupa\\Desktop\\semestr V\\JA\\GaussFilterASM\\SpeedtestResults\\"
+                + DateTime.Now.ToString("yyyyMMdd-hhmmssss") + ".csv";
+
+            StreamWriter writer = new StreamWriter(outputPath);
+            writer.WriteLine("threads,C++,Asm");
+
+            int width = beforeBitmap.Width;
+            int height = beforeBitmap.Height;
+
+            Rectangle rect = new Rectangle(0, 0, beforeBitmap.Width, beforeBitmap.Height);
+            BitmapData bmpData = beforeBitmap.LockBits(rect, ImageLockMode.ReadWrite, beforeBitmap.PixelFormat);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = Math.Abs(bmpData.Stride) * beforeBitmap.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            for (int numberOfThreads = 1; numberOfThreads <= 64; numberOfThreads++)
+            {
+
+                var timer = new System.Diagnostics.Stopwatch();
+
+                int dividedPart = height / numberOfThreads;
+
+                Thread[] threads = new Thread[numberOfThreads];
+
+                for (int i = 0; i < (numberOfThreads - 1); i++)
+                {
+                    int localIndex = i;
+                    threads[i] = new Thread(() =>
+                    {
+                        for (int i = 0; i < 10; i++) {
+                            gaussBlur(rgbValues, bytes, width, localIndex * dividedPart, (localIndex + 1) * dividedPart);
+                        }
+                    });
+                }
+                threads[numberOfThreads - 1] = new Thread(() =>
+                {
+                    for (int i = 0; i < 10; i++) {
+                        gaussBlur(rgbValues, bytes, width, (numberOfThreads - 1) * dividedPart, height - 1);
+                    }
+
+                });
+
+                timer.Start();
+                foreach (Thread thread in threads)
+                {
+                    thread.Start();
+                }
+
+                foreach (Thread thread in threads)
+                {
+                    thread.Join();
+                }
+                timer.Stop();
+
+                writer.Write(numberOfThreads + "," + (timer.ElapsedTicks / 10).ToString() + ",");
+                writer.Flush();
+
+                for (int i = 0; i < (numberOfThreads - 1); i++)
+                {
+                    int localIndex = i;
+                    threads[i] = new Thread(() => {
+                        for (int i = 0; i <= 10; i++) {
+                            gaussBlurAsm(rgbValues, bytes, width, localIndex * dividedPart, (localIndex + 1) * dividedPart);
+                            }
+                        }
+                    );
+                }
+                threads[numberOfThreads - 1] = new Thread(() => {
+                    for (int i = 0; i <= 10; i++) {
+                        gaussBlurAsm(rgbValues, bytes, width, (numberOfThreads - 1) * dividedPart, height - 1);
+                        }
+                    }
+                );
+
+                timer.Restart();
+                //for (int i = 0; i < 10; i++)
+                //{
+                    foreach (Thread thread in threads)
+                    {
+                        thread.Start();
+                    }
+
+                    foreach (Thread thread in threads)
+                    {
+                        thread.Join();
+                    }
+                //}
+                timer.Stop();
+
+                writer.Write((timer.ElapsedTicks / 10).ToString() + "\n");
+                writer.Flush();
+
+                //Marshal.Copy(rgbValues, 0, ptr, bytes);
+
+                //beforeBitmap.UnlockBits(bmpData);
+
+                //afterBmpBox.Image = beforeBitmap;
+
+            }
+
+            writer.Close();
+
         }
 
         private void saveButton_Click(object sender, EventArgs e)
