@@ -54,10 +54,9 @@ namespace GaussFilterASM
 
         }
 
-        
 
-        //[DllImport("C:\\Users\\Pawe³ Skorupa\\Desktop\\semestr V\\JA\\GaussFilterASM\\x64\\Debug\\GaussCppDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        //public static extern int test();
+        [DllImport("C:\\Users\\Pawe³ Skorupa\\Desktop\\semestr V\\JA\\GaussFilterASM\\x64\\Release\\GaussAsmDLL.dll")]
+        static extern void gaussBlurAsm(byte[] inputPixels, int size, int imageWidht, int startHeight, int endHeight);
 
         [LibraryImport("C:\\Users\\Pawe³ Skorupa\\Desktop\\semestr V\\JA\\GaussFilterASM\\x64\\Release\\GaussCppDLL.dll")]
         [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
@@ -84,18 +83,33 @@ namespace GaussFilterASM
 
             int numberOfThreads = threadsTrackbar.Value;
 
-            int dividedHeight = beforeBitmap.Height / numberOfThreads;
+            int dividedPart = (beforeBitmap.Height) / numberOfThreads;
 
             Thread[] threads = new Thread[numberOfThreads];
 
-            for (int i = 0; i < (numberOfThreads - 1); i++)
+            if (cppButton.Checked)
             {
-                int localIndex = i;
-                threads[i] = new Thread(() => gaussBlur(rgbValues, bytes, width, localIndex * dividedHeight, (localIndex + 1) * dividedHeight));
-            }
-            threads[numberOfThreads - 1] = new Thread(() =>
-            gaussBlur(rgbValues, bytes, width, (numberOfThreads - 1) * dividedHeight, height - 1));
 
+                for (int i = 0; i < (numberOfThreads - 1); i++)
+                {
+                    int localIndex = i;
+                    threads[i] = new Thread(() => gaussBlur(rgbValues, bytes, width /** height*/, localIndex * dividedPart, (localIndex + 1) * dividedPart));
+                }
+                threads[numberOfThreads - 1] = new Thread(() =>
+                gaussBlur(rgbValues, bytes, width, (numberOfThreads - 1) * dividedPart, height - 1));
+
+            } else
+            {
+
+                for (int i = 0; i < (numberOfThreads - 1); i++)
+                {
+                    int localIndex = i;
+                    threads[i] = new Thread(() => gaussBlurAsm(rgbValues, bytes, width /** height*/, localIndex * dividedPart, (localIndex + 1) * dividedPart));
+                }
+                threads[numberOfThreads - 1] = new Thread(() =>
+                gaussBlurAsm(rgbValues, bytes, width, (numberOfThreads - 1) * dividedPart, height - 1));
+
+            }
 
             timer.Start();
             foreach(Thread thread in threads)
@@ -109,8 +123,6 @@ namespace GaussFilterASM
             }
             timer.Stop();
 
-            //gaussBlur(rgbValues, bytes, beforeBitmap.Width, 0, beforeBitmap.Height);
-
             Marshal.Copy(rgbValues, 0, ptr, bytes);
 
             beforeBitmap.UnlockBits(bmpData);
@@ -118,7 +130,6 @@ namespace GaussFilterASM
             afterBmpBox.Image = beforeBitmap;
 
            timeValueLabel.Text = timer.ElapsedTicks.ToString() + " ticks";
-            
 
             runButton.Enabled = true;
             saveButton.Enabled = true;

@@ -1,0 +1,17 @@
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\bin\x64\Release\net7.0-windows\GaussFilterASM.exe
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\bin\x64\Release\net7.0-windows\GaussFilterASM.deps.json
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\bin\x64\Release\net7.0-windows\GaussFilterASM.runtimeconfig.json
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\bin\x64\Release\net7.0-windows\GaussFilterASM.dll
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\bin\x64\Release\net7.0-windows\GaussFilterASM.pdb
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.csproj.AssemblyReference.cache
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.Form1.resources
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.csproj.GenerateResource.cache
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.AssemblyInfoInputs.cache
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.AssemblyInfo.cs
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.csproj.CoreCompileInputs.cache
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.dll
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\refint\GaussFilterASM.dll
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.pdb
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\GaussFilterASM.genruntimeconfig.cache
+C:\Users\Paweł Skorupa\Desktop\semestr V\JA\GaussFilterASM\GaussFilterASM\obj\x64\Release\net7.0-windows\ref\GaussFilterASM.dll
